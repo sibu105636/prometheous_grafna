@@ -43,7 +43,7 @@ spec:
       - name: traefik
         securityContext:
           runAsUser: 99
-        image: reg-dhc.app.corpintra.net/example/traefik:1.3.6
+        image: registry_url/example/traefik:1.3.6
         args:
         - --file
         imagePullPolicy: Always
@@ -57,8 +57,7 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 1001
-        #image: reg-dhc.app.corpintra.net/example/prometheus:v1.2.1
-        image: reg-dhc.app.corpintra.net/example/prometheus:v2.0.0
+        image: registry_url/example/prometheus:v2.0.0
         args:
           - "--config.file=/etc/prometheus/prometheus.yaml"
           - "--storage.tsdb.retention=30d"
@@ -79,12 +78,7 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 472
-#        image: reg-dhc.app.corpintra.net/eedc_a_sakrish/grafana:5.0.0
-#        image: reg-dhc.app.corpintra.net/mathaku/grafana:v1.0
-        #image: reg-dhc.app.corpintra.net/eedc_a_sakrish/grafana:latest
-        #image: reg-dhc.app.corpintra.net/mathaku/grafana:new-proxy
-        image: reg-dhc.app.corpintra.net/eedc_s_dhcregp/grafana:latest-apac-changes
-        #image: reg-dhc.app.corpintra.net/mathaku/grafana:latest-apac-changes
+        image: registry_url/eedc_a_sakrish/grafana:5.0.0
         imagePullPolicy: Always
         ports:
         - name: grafana-http
@@ -100,7 +94,7 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 1001
-        image: reg-dhc.app.corpintra.net/example/blackbox-exporter:v0.3.0
+        image: registry_url/example/blackbox-exporter:v0.3.0
         args:
           - '-config.file=/etc/blackbox/blackbox.yaml'
         ports:
@@ -113,12 +107,12 @@ spec:
         securityContext:
           runAsNonRoot: true
           runAsUser: 1001
-        image: reg-dhc.app.corpintra.net/example/alertmanager:v0.7.1
+        image: registry_url/example/alertmanager:v0.7.1
         env:
         - name: http_proxy
-          value: "http:////53.18.255.131:3128"
+          value: "http:////ip:3128"
         - name: https_proxy
-          value: "http://53.18.255.131:3128"
+          value: "http://ip:3128"
         args:
           - '-config.file=/etc/alertmanager/alertmanager.yaml'
           - "--web.external-url=http://localhost/alertmanager/"
@@ -226,7 +220,7 @@ data:
         metrics_path: /metrics
         static_configs:
           - targets:
-               - 's96dhcvm04.destr.corpintra.net:9191'
+               - 'emea_test_machine:9191'
 
 
       - job_name: 'quay_prod_sanity'
@@ -234,14 +228,14 @@ data:
         metrics_path: /metrics
         static_configs:
           - targets:
-               - 's96dhcvm04.destr.corpintra.net:9192'
+               - 'emea_test_machine:9192'
 
       - job_name: 'quay_prod_sanity_apac'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-               - 'IADCA0000027.adc.corpintra.net:9192'
+               - 'apac_app:9192'
 
       - job_name: 'bb-prom-prod'
         scrape_interval: 30s
@@ -253,85 +247,85 @@ data:
         params:
              token: ['production']
         static_configs:
-          - targets: ['git-dhc.app.corpintra.net']   
+          - targets: ['bb_url']   
       - job_name: 'quay-prom-int'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.167.229:9092'
-            - '53.18.167.230:9092'
-            - '53.18.231.44:9092'
-            - '53.18.231.45:9092'
+            - 'ip:9092'
+            - 'ip:9092'
+            - 'ip:9092'
+            - 'ip092'
       - job_name: 'EDC-QUAY-PD-sedcadhc0020'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.167.228:9100'
+            - 'ip100'
       - job_name: 'EDC_QUAY_PD-sedcadhc0010'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.167.227:9100'
+            - 'ip100'
       - job_name: 'APAC-QUAY-PD-sadca0000440'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.125.25.45:9100'
+            - 'ip:9100'
       - job_name: 'APAC-QUAY-PD-sadca0000441'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.125.25.46:9100'
+            - 'ip:9100
       - job_name: 'EDC-DB-PD-sedcbdhc0010'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.169.63:9100'
+            - 'ip:9100
       - job_name: 'EDC-DB-PD-sedcbdhc0020'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.169.64:9100'
+            - 'ip:9100
       - job_name: 'EDC-DB-INT-sedcbdhc0060'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.169.66:9100'
+            - 'ip:9100
       - job_name: 'EDC-DB-INT-sedcbdhc0050'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.169.65:9100'
+            - 'ip:9100'
       - job_name: 'EDC-QUAY-INT-sedcadhc0060'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.167.230:9100'
+            - 'ip:9100'
       - job_name: 'EDC-QUAY-INT-sedcadhc0050'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.167.229:9100'
+            - ':9100'
       - job_name: 'quay-prom-prod'
         scrape_interval: 30s
         metrics_path: /metrics
         static_configs:
           - targets:
-            - '53.18.167.227:9092'
-            - '53.18.167.228:9092'
-            - '53.18.231.42:9092'
-            - '53.18.231.43:9092'
+            - ':9092'
+            - ':9092'
+            - ':9092'
+            - ':9092'
     alerting:
       alertmanagers:
       - scheme: http
